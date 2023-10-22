@@ -1,0 +1,43 @@
+name: Release
+on:
+  pull_request:
+    types:
+      - closed
+    branches:
+      - master
+jobs:
+  Release:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
+      - name: Get current version
+        id: current-version
+        run: |
+          result=$(npx dot-json@1 package.json version)
+          echo "version=${{result}}" >> $GITHUB_OUTPUT
+      - name: Install modules
+        run: pnpm i
+      - name: Update version
+        run: |
+          npx dot-json@1 build/manifest.json version ${{ steps.current-version.outputs.version }}
+          npx dot-json@1 package.json version ${{ steps.current-version.outputs.version }}
+      - run: pnpm build
+      - run: node deploy.js
+      - name: Submit
+        run: |
+          npx chrome-webstore-upload-cli@2 upload --source extension.zip --auto-publish
+        env:
+          EXTENSION_ID: ${{ secrets.EXTENSION_ID }}
+          CLIENT_ID: ${{ secrets.CLIENT_ID }}
+          CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+          REFRESH_TOKEN: ${{ secrets.REFRESH_TOKEN }}
+      - name: Create release draft
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ steps.daily-version.outputs.version }}
+          generate_release_notes: true
+          files: extension.zip
