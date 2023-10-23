@@ -6,17 +6,21 @@ const run = () => {
   try {
     const targetLayer = core.getInput("layer") as Layer;
     const currentVersion = core.getInput("version");
-    const updatedVersion = getUpdatedVersion(targetLayer, currentVersion);
 
-    core.debug("targetLayer");
-    core.debug(targetLayer);
-    core.debug("currentVersion");
-    core.debug(currentVersion);
-    core.debug(updatedVersion);
+    if (!isValidSemanticVersioning(currentVersion)) throw new Error();
+
+    const updatedVersion = getUpdatedVersion(targetLayer, currentVersion);
     core.setOutput("version", updatedVersion);
   } catch (error) {
     if (error instanceof Error) core.setFailed(error.message);
   }
+};
+
+const isValidSemanticVersioning = (version: string) => {
+  const regex = new RegExp(
+    /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$/
+  );
+  return regex.test(version);
 };
 
 const getUpdatedVersion = (layer: Layer, currentVersion: string) => {
