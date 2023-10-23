@@ -3,17 +3,16 @@ import * as core from "@actions/core";
 type Layer = "major" | "minor" | "patch";
 
 const run = () => {
-  console.log("here");
-  // try {
-  const targetLayer = core.getInput("layer") as Layer;
-  const currentVersion = core.getInput("version");
-  const updatedVersion = getUpdatedVersion(targetLayer, currentVersion);
+  core.setOutput("test", "test");
+  try {
+    const targetLayer = core.getInput("layer") as Layer;
+    const currentVersion = core.getInput("version");
+    const updatedVersion = getUpdatedVersion(targetLayer, currentVersion);
 
-  console.log(targetLayer, currentVersion, updatedVersion);
-  core.setOutput("version", updatedVersion);
-  // } catch (error) {
-  //   if (error instanceof Error) core.setFailed(error.message);
-  // }
+    core.setOutput("version", updatedVersion);
+  } catch (error) {
+    if (error instanceof Error) core.setFailed(error.message);
+  }
 };
 
 const getUpdatedVersion = (layer: Layer, currentVersion: string) => {

@@ -33,10 +33,6 @@ jobs:
               'patch'
             }}
           version: ${{ steps.get-current-version.outputs.version }}
-      - name: Update version
-        run: |
-          npx dot-json@1 manifest.json version ${{ steps.get-next-version.outputs.version }}
-          npx dot-json@1 package.json version ${{ steps.get-next-version.outputs.version }}
       - name: Configuration GitHub
         if: steps.diff.outputs.changed == '0'
         run: |
@@ -45,6 +41,11 @@ jobs:
           git remote set-url origin https://github-actions:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Update version
+        run: |
+          echo ${{ steps.get-next-version.outputs.test }}
+          npx dot-json@1 manifest.json version ${{ steps.get-next-version.outputs.version }}
+          npx dot-json@1 package.json version ${{ steps.get-next-version.outputs.version }}
       - name: Push
         run: |
           git add .
