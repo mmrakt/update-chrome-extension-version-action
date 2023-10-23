@@ -4,11 +4,15 @@ type Layer = "major" | "minor" | "patch";
 
 const run = () => {
   core.setOutput("test", "test");
+  core.debug("here");
   try {
     const targetLayer = core.getInput("layer") as Layer;
     const currentVersion = core.getInput("version");
     const updatedVersion = getUpdatedVersion(targetLayer, currentVersion);
 
+    core.debug(targetLayer);
+    core.debug(currentVersion);
+    core.debug(updatedVersion);
     core.setOutput("version", updatedVersion);
   } catch (error) {
     if (error instanceof Error) core.setFailed(error.message);
