@@ -1,10 +1,9 @@
 import * as core from "@actions/core";
 
 type Layer = "major" | "minor" | "patch";
-
+core.setOutput("test", "test");
+core.debug("here");
 const run = () => {
-  core.setOutput("test", "test");
-  core.debug("here");
   try {
     const targetLayer = core.getInput("layer") as Layer;
     const currentVersion = core.getInput("version");

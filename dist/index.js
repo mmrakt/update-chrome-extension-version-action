@@ -25635,12 +25635,17 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core = __importStar(__nccwpck_require__(9093));
+core.setOutput("test", "test");
+core.debug("here");
 const run = () => {
     try {
         const targetLayer = core.getInput("layer");
         const currentVersion = core.getInput("version");
         const updatedVersion = getUpdatedVersion(targetLayer, currentVersion);
-        core.info(updatedVersion);
+        core.debug(targetLayer);
+        core.debug(currentVersion);
+        core.debug(updatedVersion);
+        core.setOutput("version", updatedVersion);
     }
     catch (error) {
         if (error instanceof Error)
