@@ -1,8 +1,6 @@
 import * as core from "@actions/core";
 
 type Layer = "major" | "minor" | "patch";
-core.setOutput("test", "test");
-core.debug("here");
 const run = () => {
   try {
     const targetLayer = core.getInput("layer") as Layer;
@@ -23,16 +21,16 @@ const getUpdatedVersion = (layer: Layer, currentVersion: string) => {
   let updatedVersionArr = currentVersionArr;
   switch (layer) {
     case "major":
-      updatedVersionArr[0] = updatedVersionArr[0] + 1;
+      updatedVersionArr[0] = String(Number(updatedVersionArr[0]) + 1);
       updatedVersionArr[1] = "0";
       updatedVersionArr[2] = "0";
     case "minor":
-      updatedVersionArr[1] = updatedVersionArr[1] + 1;
+      updatedVersionArr[1] = String(Number(updatedVersionArr[1]) + 1);
       updatedVersionArr[2] = "0";
     case "patch":
-      updatedVersionArr[2] = updatedVersionArr[2] + 1;
+      updatedVersionArr[2] = String(Number(updatedVersionArr[2]) + 1);
   }
-  return updatedVersionArr.join("");
+  return updatedVersionArr.join(".");
 };
 
 run();
