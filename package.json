@@ -1,6 +1,6 @@
 {
   "name": "chrome-extension-auto-release-sandbox",
-  "version": "1.0.0",
+  "version": 1001,
   "description": "",
   "main": "index.js",
   "scripts": {
