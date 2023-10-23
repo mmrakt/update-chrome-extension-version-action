@@ -14,13 +14,13 @@ jobs:
       - uses: pnpm/action-setup@v2
         with:
           version: 8
+      - name: Install modules
+        run: pnpm i
       - name: Get current version
         id: get-current-version
         run: |
           result=$(npx dot-json@1 package.json version)
           echo "version=${result}" >> $GITHUB_OUTPUT
-      - name: Install modules
-        run: pnpm i
       - name: Get next version
         id: get-next-version
         uses: mmrakt/chrome-extension-auto-release-sandbox@v0.1
@@ -35,7 +35,7 @@ jobs:
           version: ${{ steps.get-current-version.outputs.version }}
       - name: Update version
         run: |
-          npx dot-json@1 build/manifest.json version ${{ steps.get-next-version.outputs.version }}
+          npx dot-json@1 manifest.json version ${{ steps.get-next-version.outputs.version }}
           npx dot-json@1 package.json version ${{ steps.get-next-version.outputs.version }}
       - name: Configuration GitHub
         if: steps.diff.outputs.changed == '0'
