@@ -27,13 +27,10 @@ jobs:
         with:
           layer: |
             ${{
-              contains(github.event.pull_request.labels.*.name, 'release:major') &&
-                "major" ||
-              contains(github.event.pull_request.labels.*.name, 'release:minor') &&
-                "minor" ||
-              contains(github.event.pull_request.labels.*.name, 'release:patch') &&
-                "patch" ||
-              "patch"
+              contains(github.event.pull_request.labels.*.name, 'release:major') && 'major' ||
+              contains(github.event.pull_request.labels.*.name, 'release:minor') && 'minor' ||
+              contains(github.event.pull_request.labels.*.name, 'release:patch') && 'patch' ||
+              'patch'
             }}
           version: ${{ steps.get-current-version.outputs.version }}
       - name: Update version
