@@ -25,6 +25,14 @@ jobs:
         run: |
           npx dot-json@1 build/manifest.json version ${{ steps.current-version.outputs.version }}
           npx dot-json@1 package.json version ${{ steps.current-version.outputs.version }}
+      - name: Configuration GitHub
+        if: steps.diff.outputs.changed == '0'
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git remote set-url origin https://github-actions:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - run: pnpm build
       - run: node deploy.js
       - name: Submit
