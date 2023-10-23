@@ -24,11 +24,14 @@ const getUpdatedVersion = (layer: Layer, currentVersion: string) => {
       updatedVersionArr[0] = String(Number(updatedVersionArr[0]) + 1);
       updatedVersionArr[1] = "0";
       updatedVersionArr[2] = "0";
+      break;
     case "minor":
       updatedVersionArr[1] = String(Number(updatedVersionArr[1]) + 1);
       updatedVersionArr[2] = "0";
+      break;
     case "patch":
       updatedVersionArr[2] = String(Number(updatedVersionArr[2]) + 1);
+      break;
   }
   return updatedVersionArr.join(".");
 };

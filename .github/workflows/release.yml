@@ -43,8 +43,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Update version
         run: |
-          npx dot-json@1 manifest.json version ${{ steps.get-next-version.outputs.version }}
-          npx dot-json@1 package.json version ${{ steps.get-next-version.outputs.version }}
+          npx dot-json@1 manifest.json version '${{ steps.get-next-version.outputs.version }}'
+          npx dot-json@1 package.json version '${{ steps.get-next-version.outputs.version }}'
       - name: Push
         run: |
           git add .
