@@ -1,0 +1,14 @@
+name: 'get-next-semantic-version'
+description: ''
+inputs:
+  layer:
+    description: 'semver layer'
+    required: true
+    default: 'patch'
+  version:
+    descriptoin: 'previous version'
+    required: true
+    default: '0.1.0'
+runs:
+  using: 'node18'
+  main: 'dist/index.js'
