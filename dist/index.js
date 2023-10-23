@@ -25635,8 +25635,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core = __importStar(__nccwpck_require__(9093));
-core.setOutput("test", "test");
-core.debug("here");
+core.debug(typeof core.getInput("version"));
 const run = () => {
     try {
         const targetLayer = core.getInput("layer");
@@ -25657,16 +25656,20 @@ const getUpdatedVersion = (layer, currentVersion) => {
     let updatedVersionArr = currentVersionArr;
     switch (layer) {
         case "major":
-            updatedVersionArr[0] = updatedVersionArr[0] + 1;
+            updatedVersionArr[0] = String(Number(updatedVersionArr[0]) + 1);
+            core.debug(String(Number(updatedVersionArr[0]) + 1));
             updatedVersionArr[1] = "0";
             updatedVersionArr[2] = "0";
+            break;
         case "minor":
-            updatedVersionArr[1] = updatedVersionArr[1] + 1;
+            updatedVersionArr[1] = String(Number(updatedVersionArr[1]) + 1);
             updatedVersionArr[2] = "0";
+            break;
         case "patch":
-            updatedVersionArr[2] = updatedVersionArr[2] + 1;
+            updatedVersionArr[2] = String(Number(updatedVersionArr[2]) + 1);
+            break;
     }
-    return updatedVersionArr.join("");
+    return updatedVersionArr.join(".");
 };
 run();
 
