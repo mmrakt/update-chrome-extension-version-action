@@ -45,8 +45,12 @@ jobs:
           git remote set-url origin https://github-actions:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Push
+        run: |
+          git add .
+          git commit -m "v$(grep version package.json | awk -F \" '{print $4}')"
+          git push origin HEAD
       - run: pnpm build
-      - run: node deploy.js
       # - name: Submit Chrome web store
       #   run: |
       #     npx chrome-webstore-upload-cli@2 upload --source extension.zip --auto-publish
