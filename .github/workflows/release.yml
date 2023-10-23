@@ -18,7 +18,7 @@ jobs:
         id: get-current-version
         run: |
           result=$(npx dot-json@1 package.json version)
-          echo "version=${{result}}" >> $GITHUB_OUTPUT
+          echo "version=${result}" >> $GITHUB_OUTPUT
       - name: Install modules
         run: pnpm i
       - name: Get next version
@@ -28,12 +28,12 @@ jobs:
           layer: |
             ${{
               contains(github.event.pull_request.labels.*.name, 'release:major') &&
-                major ||
+                "major" ||
               contains(github.event.pull_request.labels.*.name, 'release:minor') &&
-                minor ||
+                "minor" ||
               contains(github.event.pull_request.labels.*.name, 'release:patch') &&
-                patch ||
-              patch
+                "patch" ||
+              "patch"
             }}
           version: ${{ steps.get-current-version.outputs.version }}
       - name: Update version
