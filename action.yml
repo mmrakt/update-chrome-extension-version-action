@@ -72,7 +72,9 @@ runs:
     - name: Get label length
       id: get-label-length
       run: |
+        echo ${ labels }
         labelCount=$(echo $labels | jq '. | length')
+        echo ${{ labelCount }}
         echo "labelCount=${labelCount}" >> $GITHUB_OUTPUT
       shell: bash
       env:
