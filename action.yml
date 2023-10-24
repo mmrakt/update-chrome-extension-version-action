@@ -99,6 +99,7 @@ runs:
 
     - name: Zip
       run: zip -r ${{ inputs.zip_file_name }}.zip ${{ inputs.out_dir }}
+      shell: bash
 
     - name: Upload Chrome web store
       run: |
@@ -109,6 +110,7 @@ runs:
         CLIENT_SECRET: ${{ inputs.google_client_secret }}
         REFRESH_TOKEN: ${{ inputs.refresh_token }}
       if: ${{ inputs.upload_chrome_web_store == true }}
+      shell: bash
 
     - name: Create release draft
       uses: softprops/action-gh-release@v1
