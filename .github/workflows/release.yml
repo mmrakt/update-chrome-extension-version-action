@@ -31,7 +31,7 @@ jobs:
 
       - name: Get next version
         id: get-next-version
-        uses: mmrakt/chrome-extension-auto-release-sandbox@v0.1
+        uses: mmrakt/update-semantic-versioning-action@v0.1.0
         with:
           layer: |
             ${{
