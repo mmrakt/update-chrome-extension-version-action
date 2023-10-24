@@ -5,9 +5,37 @@ inputs:
     description: "GitHub access token"
     required: true
     default: ""
+  upload_chrome_web_store:
+    description: "Automatically upload chrome web store"
+    required: false
+    default: false
+  chrome_extension_id:
+    description: "Chrome extension id"
+    required: false
+    default: ""
+  google_client_id:
+    description: "GCP client id"
+    required: false
+    default: ""
+  google_client_secret:
+    description: "GCP client secret"
+    required: false
+    default: ""
+  refresh_token:
+    description: "Refresh token"
+    required: false
+    default: ""
+  zip_file_name:
+    description: "Zip file name"
+    required: false
+    default: "output"
+  out_dir:
+    description: "Output directory path"
+    required: false
+    default: "./dist"
   create_release_note:
     description: "Automatically create release notes"
-    required: true
+    required: false
     default: false
 runs:
   using: "composite"
@@ -67,21 +95,25 @@ runs:
     - name: Build
       run: pnpm build
       shell: bash
+      if: ${{ inputs.create_release_note == true || inputs.upload_chrome_web_store == true }}
+
+    - name: Zip
+      run: zip -r ${{ inputs.zip_file_name }}.zip ${{ inputs.out_dir }}
+
+    - name: Upload Chrome web store
+      run: |
+        npx chrome-webstore-upload-cli@2 upload --source ${{ inputs.zip_file_name }}.zip --auto-publish
+      env:
+        EXTENSION_ID: ${{ inputs.chrome_extension_id }}
+        CLIENT_ID: ${{ inputs.google_client_id }}
+        CLIENT_SECRET: ${{ inputs.google_client_secret }}
+        REFRESH_TOKEN: ${{ inputs.refresh_token }}
+      if: ${{ inputs.upload_chrome_web_store == true }}
+
+    - name: Create release draft
+      uses: softprops/action-gh-release@v1
+      with:
+        tag_name: "v${{ steps.get-next-version.outputs.version }}"
+        generate_release_notes: true
+        files: extension.zip
       if: ${{ inputs.create_release_note == true }}
-
-    # - name: Submit Chrome web store
-    #   run: |
-    #     npx chrome-webstore-upload-cli@2 upload --source extension.zip --auto-publish
-    #   env:
-    #     EXTENSION_ID: ${{ secrets.EXTENSION_ID }}
-    #     CLIENT_ID: ${{ secrets.CLIENT_ID }}
-    #     CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
-    #     REFRESH_TOKEN: ${{ secrets.REFRESH_TOKEN }}
-
-    # - name: Create release draft
-    #   uses: softprops/action-gh-release@v1
-    #   with:
-    #     tag_name: "v${{ steps.get-next-version.outputs.version }}"
-    #     generate_release_notes: true
-    #     files: extension.zip
-    #   if: ${{ inputs.create_release_note == true }}
