@@ -1,10 +1,14 @@
 name: "update-chrome-extension-version-action"
-description: ""
+description: "Automatically update chrome extension version action"
 inputs:
   github_token:
     description: "GitHub access token"
     required: true
     default: ""
+  create_release_note:
+    description: "Automatically create release notes"
+    required: true
+    default: false
 runs:
   using: "composite"
   steps:
@@ -63,6 +67,7 @@ runs:
     - name: Build
       run: pnpm build
       shell: bash
+      if: ${{ inputs.create_release_note == true }}
 
     # - name: Submit Chrome web store
     #   run: |
@@ -79,3 +84,4 @@ runs:
     #     tag_name: "v${{ steps.get-next-version.outputs.version }}"
     #     generate_release_notes: true
     #     files: extension.zip
+    #   if: ${{ inputs.create_release_note == true }}
