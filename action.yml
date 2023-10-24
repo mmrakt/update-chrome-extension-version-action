@@ -93,7 +93,8 @@ runs:
       shell: bash
 
     - name: Build and zip
-      run: pnpm build
+      run: |
+        pnpm build
         zip -r ${{ inputs.zip_file_name }}.zip ${{ inputs.out_dir }}
       shell: bash
       if: ${{ inputs.create_release_note == 'true' || inputs.upload_chrome_web_store == 'true' }}
