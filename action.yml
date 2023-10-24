@@ -74,7 +74,7 @@ runs:
       run: |
         echo ${ labels }
         labelCount=$(echo $labels | jq '. | length')
-        echo ${{ labelCount }}
+        echo ${ labelCount }
         echo "labelCount=${labelCount}" >> $GITHUB_OUTPUT
       shell: bash
       env:
