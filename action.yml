@@ -61,6 +61,17 @@ runs:
         echo "version=${result}" >> $GITHUB_OUTPUT
       shell: bash
 
+    - name: Check PR label
+      if: |
+        !contains(github.event.pull_request.labels.*.name, 'release:major') &&
+        !contains(github.event.pull_request.labels.*.name, 'release:minor') &&
+        !contains(github.event.pull_request.labels.*.name, 'release:patch')
+      run: |
+        exit 1
+
+    - run: echo ${{ github.event.pull_request.labels.*.name }}
+      shell: bash
+
     - name: Get next version
       id: get-next-version
       uses: mmrakt/update-semantic-versioning-action@v0.1.0
