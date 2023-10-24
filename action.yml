@@ -70,7 +70,7 @@ runs:
         exit 1
       shell: bash
 
-    - run: echo ${{ github.event.pull_request.labels.*.name }}
+    - run: echo ${{ github.event.pull_request.labels.length }}
       shell: bash
 
     - name: Get next version
