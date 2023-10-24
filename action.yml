@@ -7,6 +7,10 @@ inputs:
     default: ""
 runs:
   using: "composite"
+  env:
+    major_release_label: "release:major"
+    minor_release_label: "release:minor"
+    patch_release_label: "release:patch"
   steps:
     - uses: actions/checkout@v3
 
