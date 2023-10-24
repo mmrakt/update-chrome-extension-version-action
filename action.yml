@@ -1,14 +1,14 @@
-name: 'get-next-semantic-version'
-description: ''
+name: "get-next-semantic-version"
+description: ""
 inputs:
   layer:
-    description: 'semver layer'
+    description: "semver layer"
     required: true
-    default: 'patch'
+    default: "patch"
   version:
-    descriptoin: 'previous version'
+    description: "previous version"
     required: true
-    default: '0.1.0'
+    default: "0.1.0"
 runs:
-  using: 'node16'
-  main: 'dist/index.js'
+  using: "node16"
+  main: "dist/index.js"
