@@ -68,6 +68,7 @@ runs:
         !contains(github.event.pull_request.labels.*.name, 'release:patch')
       run: |
         exit 1
+      shell: bash
 
     - run: echo ${{ github.event.pull_request.labels.*.name }}
       shell: bash
