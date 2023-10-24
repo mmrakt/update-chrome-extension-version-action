@@ -92,14 +92,11 @@ runs:
         git push origin HEAD
       shell: bash
 
-    - name: Build
+    - name: Build and zip
       run: pnpm build
+        zip -r ${{ inputs.zip_file_name }}.zip ${{ inputs.out_dir }}
       shell: bash
-      if: ${{ inputs.create_release_note == true || inputs.upload_chrome_web_store == true }}
-
-    - name: Zip
-      run: zip -r ${{ inputs.zip_file_name }}.zip ${{ inputs.out_dir }}
-      shell: bash
+      if: ${{ inputs.create_release_note == "true" || inputs.upload_chrome_web_store == "true" }}
 
     - name: Upload Chrome web store
       run: |
@@ -109,7 +106,7 @@ runs:
         CLIENT_ID: ${{ inputs.google_client_id }}
         CLIENT_SECRET: ${{ inputs.google_client_secret }}
         REFRESH_TOKEN: ${{ inputs.refresh_token }}
-      if: ${{ inputs.upload_chrome_web_store == true }}
+      if: ${{ inputs.upload_chrome_web_store == "true" }}
       shell: bash
 
     - name: Create release draft
@@ -118,4 +115,4 @@ runs:
         tag_name: "v${{ steps.get-next-version.outputs.version }}"
         generate_release_notes: true
         files: extension.zip
-      if: ${{ inputs.create_release_note == true }}
+      if: ${{ inputs.create_release_note == "true" }}
