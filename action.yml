@@ -5,6 +5,10 @@ inputs:
     description: "GitHub access token"
     required: true
     default: ""
+  manifest_file_path:
+    description: "File path of manifest file with version"
+    required: false
+    default: "manifest.json"
   upload_chrome_web_store:
     description: "Automatically upload chrome web store"
     required: false
@@ -81,7 +85,7 @@ runs:
 
     - name: Update versioning
       run: |
-        npx dot-json@1 manifest.json version "${{ steps.get-next-version.outputs.version }}"
+        npx dot-json@1 ${{ inputs.manifest_file_path }} version "${{ steps.get-next-version.outputs.version }}"
         npx dot-json@1 package.json version "${{ steps.get-next-version.outputs.version }}"
       shell: bash
 
@@ -115,5 +119,5 @@ runs:
       with:
         tag_name: "v${{ steps.get-next-version.outputs.version }}"
         generate_release_notes: true
-        files: extension.zip
+        files: ${{ inputs.zip_file_name }}
       if: ${{ inputs.create_release_note == 'true' }}
