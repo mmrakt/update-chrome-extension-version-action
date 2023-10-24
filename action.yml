@@ -16,12 +16,14 @@ runs:
 
     - name: Install modules
       run: pnpm i
+      shell: bash
 
     - name: Get current version
       id: get-current-version
       run: |
         result=$(npx dot-json@1 package.json version)
         echo "version=${result}" >> $GITHUB_OUTPUT
+      shell: bash
 
     - name: Get next version
       id: get-next-version
@@ -29,15 +31,11 @@ runs:
       with:
         layer: |
           ${{
-            contains(github.event.pull_request.labels.*.name, ${major_release_label}) && 'major' ||
-            contains(github.event.pull_request.labels.*.name, ${minor_release_label}) && 'minor' ||
+            contains(github.event.pull_request.labels.*.name, 'release:major') && 'major' ||
+            contains(github.event.pull_request.labels.*.name, 'release:minor') && 'minor' ||
             'patch'
           }}
         version: ${{ steps.get-current-version.outputs.version }}
-      env:
-        major_release_label: "release:major"
-        minor_release_label: "release:minor"
-        patch_release_label: "release:patch"
 
     - name: Configuration GitHub
       if: steps.diff.outputs.changed == '0'
@@ -45,6 +43,7 @@ runs:
         git config --global user.name 'github-actions[bot]'
         git config --global user.email 'github-actions[bot]@users.noreply.github.com'
         git remote set-url origin https://github-actions:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}
+      shell: bash
       env:
         GITHUB_TOKEN: ${{ inputs.github_token }}
 
@@ -52,15 +51,18 @@ runs:
       run: |
         npx dot-json@1 manifest.json version "${{ steps.get-next-version.outputs.version }}"
         npx dot-json@1 package.json version "${{ steps.get-next-version.outputs.version }}"
+      shell: bash
 
     - name: Push diff
       run: |
         git add .
         git commit -m ":thumbsup: Bump up to v$(grep version package.json | awk -F \" '{print $4}')"
         git push origin HEAD
+      shell: bash
 
     - name: Build
       run: pnpm build
+      shell: bash
 
     # - name: Submit Chrome web store
     #   run: |
