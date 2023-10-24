@@ -78,7 +78,7 @@ runs:
         echo "labelCount=${labelCount}" >> $GITHUB_OUTPUT
       shell: bash
       env:
-        labels: ${{ toJson( github.event.pull_request.labels.length) }}
+        labels: ${{ toJson(github.event.pull_request.labels) }}
 
     - name: Check label length
       if: steps.get-label-length.outputs.labelCount >= 1
