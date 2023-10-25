@@ -62,7 +62,7 @@ steps:
 
 manifest version file path
 
-- default: "manifest.json"
+- default: `manifest.json`
 
 ### upload_chrome_web_store:
 
@@ -88,11 +88,11 @@ ref: [How to generate Google API keys](https://github.com/fregante/chrome-websto
 
 ### zip_file_name:
 
-- default: "output"
+- default: `output`
 
 ### out_dir:
 
-- default: "./dist"
+- default: `./dist`
 
 ### create_release_note:
 
