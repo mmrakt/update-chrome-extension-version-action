@@ -84,6 +84,8 @@ google cloud client secret
 
 google cloud refresh token
 
+ref: [How to generate Google API keys](https://github.com/fregante/chrome-webstore-upload/blob/main/How%20to%20generate%20Google%20API%20keys.md)
+
 ### zip_file_name:
 
 - default: "output"
