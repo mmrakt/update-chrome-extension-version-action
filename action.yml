@@ -61,30 +61,6 @@ runs:
         echo "version=${result}" >> $GITHUB_OUTPUT
       shell: bash
 
-    - name: Check label name
-      if: |
-        !contains(github.event.pull_request.labels.*.name, 'release:major') &&
-        !contains(github.event.pull_request.labels.*.name, 'release:minor') &&
-        !contains(github.event.pull_request.labels.*.name, 'release:patch')
-      run: exit 1
-      shell: bash
-
-    - name: Get label length
-      id: get-label-length
-      run: |
-        echo ${labels}
-        labelCount=$(echo $labels | jq '. | length')
-        echo ${labelCount}
-        echo "labelCount=${labelCount}" >> $GITHUB_OUTPUT
-      shell: bash
-      env:
-        labels: ${{ toJson(github.event.pull_request.labels) }}
-
-    - name: Check label length
-      if: steps.get-label-length.outputs.labelCount >= 1
-      run: exit 1
-      shell: bash
-
     - name: Get next version
       id: get-next-version
       uses: mmrakt/update-semantic-versioning-action@v0.1.0
