@@ -2,6 +2,10 @@
 
 This Action automates the process of updating chrome extension apps.
 
+|                        |                        |
+| ---------------------- | ---------------------- |
+| ![](./screenshot1.png) | ![](./screenshot2.png) |
+
 ## Feature
 
 - Update to next version and commit to repository(package.json, manifest.json)
